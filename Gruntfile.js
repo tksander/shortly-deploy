@@ -43,8 +43,13 @@ module.exports = function(grunt) {
     concat: {   
         dist: {
             src: [
-                './public/client/*.js', // All JS in the client folder
+                "./public/lib/jquery.js",
+                "./public/lib/underscore.js",
+                "./public/lib/backbone.js",
+                "./public/lib/handlebars.js",
+                "./public/production.min.js"
             ],
+
             dest: './production.js',
         }
     },
@@ -72,11 +77,6 @@ module.exports = function(grunt) {
     },
 
     jshint: {
-      ignore_warning: {
-        options: {
-          "-W058": true,
-        }
-      },
 
       beforeconcat: ['./public/client/*.js'],
       
@@ -88,7 +88,8 @@ module.exports = function(grunt) {
         ignores: [
           'public/lib/**/*.js',
           'public/dist/**/*.js',
-          'production.min.js',
+          'production.js',
+          'production.min.js'
         ]
       }
     },
