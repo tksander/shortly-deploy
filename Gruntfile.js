@@ -1,8 +1,50 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
+
+          
     pkg: grunt.file.readJSON('package.json'),
-    concat: {
+
+    gitadd: {
+    your_target: {
+        options: {
+          force: false
+        },
+        files: {
+          src: ['./public/client/*.js',
+                './*.js']
+        }
+      }
+    },
+
+    gitcommit: {
+    master: {
+      options: {
+        message: 'Auto-commit: Deploying files to Azure',
+        allowEmpty: true
+      },
+      files: {
+          src: ['./public/client/*.js',
+                './*.js']
+      }
+    }
+  },
+
+  gitpush: {
+    master: {
+      options: {
+        remote: 'azure'
+      }
+    }
+  },
+
+    concat: {   
+        dist: {
+            src: [
+                './public/client/*.js', // All JS in the client folder
+            ],
+            dest: './production.js',
+        }
     },
 
     mochaTest: {
@@ -21,18 +63,30 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      build: {
+          src: './production.js',
+          dest: './production.min.js'
+      }
     },
 
     jshint: {
-      files: [
-        // Add filespec list here
-      ],
+      ignore_warning: {
+        options: {
+          "-W058": true,
+        }
+      },
+
+      beforeconcat: ['./public/client/*.js'],
+      
+      afterconcat: ['./*.js'],
+
       options: {
-        force: 'true',
+        force: 'false',
         jshintrc: '.jshintrc',
         ignores: [
           'public/lib/**/*.js',
-          'public/dist/**/*.js'
+          'public/dist/**/*.js',
+          'production.min.js',
         ]
       }
     },
@@ -72,6 +126,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-git');
 
   grunt.registerTask('server-dev', function (target) {
     // Running nodejs in a different process and displaying output on the main console
@@ -85,6 +140,7 @@ module.exports = function(grunt) {
 
     grunt.task.run([ 'watch' ]);
   });
+
 
   ////////////////////////////////////////////////////
   // Main grunt tasks
@@ -105,9 +161,14 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('deploy', [
-      // add your production server task here
-  ]);
+
+
+  grunt.registerTask('deploy', ['concat', 
+                                'uglify', 
+                                'jshint', 
+                                'test', 
+                                'gitadd',
+                                'gitcommit']);
 
 
 };
