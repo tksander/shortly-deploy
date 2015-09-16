@@ -12,7 +12,8 @@ module.exports = function(grunt) {
         },
         files: {
           src: ['./public/client/*.js',
-                './*.js']
+                './*.js',
+                './*.ejs']
         }
       }
     },
@@ -25,7 +26,8 @@ module.exports = function(grunt) {
       },
       files: {
           src: ['./public/client/*.js',
-                './*.js']
+                './*.js',
+                './*.ejs']
       }
     }
   },
@@ -114,7 +116,7 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
-        command: 'azure shortlyondemandyo browse'
+        command: 'azure site browse'
       }
     },
 
