@@ -114,8 +114,10 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
+        command: 'azure shortlyondemandyo browse'
       }
     },
+
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -163,7 +165,7 @@ module.exports = function(grunt) {
 
 
 
-  grunt.registerTask('deploy', ['concat', 'uglify', 'jshint', 'test', 'gitadd','gitcommit', 'gitpush']);
+  grunt.registerTask('deploy', ['concat', 'uglify', 'jshint', 'test', 'gitadd','gitcommit', 'gitpush', 'shell:prodServer']);
 
 
 };
