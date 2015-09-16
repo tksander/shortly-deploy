@@ -163,12 +163,7 @@ module.exports = function(grunt) {
 
 
 
-  grunt.registerTask('deploy', ['concat', 
-                                'uglify', 
-                                'jshint', 
-                                'test', 
-                                'gitadd',
-                                'gitcommit']);
+  grunt.registerTask('deploy', ['concat', 'uglify', 'jshint', 'test', 'gitadd','gitcommit', 'gitpush']);
 
 
 };
