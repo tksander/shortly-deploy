@@ -86,7 +86,6 @@ var cleanMongo = function(mongoArray) {
   mongoArray.forEach(function(item) {
     item  = item.toObject();
     resultArray.push(item);
-    // resultArray.push({attributes:item});
   })
   return resultArray;
 }
