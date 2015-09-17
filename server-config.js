@@ -1,6 +1,7 @@
 var express = require('express');
 var partials = require('express-partials');
 var util = require('./lib/utility');
+var mongodongo = require('./app/models/mongoose')
 
 var handler = require('./lib/request-handler');
 
