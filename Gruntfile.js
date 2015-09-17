@@ -45,11 +45,11 @@ module.exports = function(grunt) {
             src: [
                 "./public/lib/jquery.js",
                 "./public/lib/underscore.js",
-                "./public/lib/backbone.js",
                 "./public/lib/handlebars.js",
+                "./public/lib/backbone.js"
             ],
 
-            dest: './production.js',
+            dest: './public/production.js',
         }
     },
 
@@ -70,8 +70,8 @@ module.exports = function(grunt) {
 
     uglify: {
       build: {
-          src: './production.js',
-          dest: './production.min.js'
+          src: './public/production.js',
+          dest: './public/production.min.js'
       }
     },
 
