@@ -1,8 +1,10 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
+var bcrypt = require('bcrypt-nodejs');
 mongoose.connect('mongodb://localhost/test/');
 
+// making links ********************************************
 
 var linkSchema = new Schema({
   url: String,
@@ -14,8 +16,6 @@ var linkSchema = new Schema({
 
 linkSchema.set('toObject', {getters: true}, {virtuals: false});
 
-
- 
 var Link = mongoose.model('Link', linkSchema);
 
 var computeLinkCode = function(url) {
@@ -24,9 +24,7 @@ var computeLinkCode = function(url) {
   return shasum.digest('hex').slice(0, 5);
 };
 
-
-var modelMaker = function(url, title, base_url) {
-  console.log('im working')
+var linkMaker = function(url, title, base_url) {
   var code = computeLinkCode(url);
   var linkModel = new Link({
                             url: url, 
@@ -34,52 +32,38 @@ var modelMaker = function(url, title, base_url) {
                             title: title,
                             base_url: base_url,
                             visits: 0 });
-  // console.log(linkModel);
   return linkModel;
 };
 
-// console.log(modelMaker("https://www.google.com", "Google", "http://shortlyondemandyo.azurewebsites.net/" ))
+
+// making users ********************************************
+
+var userSchema = new Schema({
+  username: {type: String, unique: true},
+  password: String,
+});
+
+userSchema.set('toObject', {getters: true}, {virtuals: false});
+
+var User = mongoose.model('User', userSchema);
+
+var userMaker = function(username, password) {
+  var hash = bcrypt.hashSync(password);
+  var userModel = new User({
+                            username: username,
+                            password: hash
+  });
+  return userModel;
+};
 
 
-// var googleLink = modelMaker("https://www.google.com", "Google", "http://shortlyondemandyo.azurewebsites.net/" )
-// var amazonLink = modelMaker("https://www.amazon.com", "Amazon", "http://shortlyondemandyo.azurewebsites.net/" )
 
-// amazonLink.save(function (err) {
-//   if(err) {
-//     throw err;
-//   }
-//   console.log("success");
-// });
 
-// googleLink.save(function (err) {
-//   if(err) {
-//     throw err;
-//   }
-//   console.log("success");
-// });
 
- // { id: 1,
- //       url: 'http://www.nytimes.com',
- //       base_url: 'http://localhost:4568',
- //       code: 'f606d',
- //       title: 'The New York Times - Breaking News, World News & Multimedia',
- //       visits: 2,
- //       created_at: 1442425547876,
- //       updated_at: 1442425562190 },
 
-// Finds all links and wraps in JSON format
-// Link.find({}).exec(function(err, array){
-//   if(err) throw err
-//   var backbone = []
-//   array.forEach(function(item){
-//     item  = item.toObject();
-//     backbone.push({attributes:item});
-//   })
 
-//   console.dir(backbone);
-// })
+// interacting with backbone ********************************************
 
-// Link.find({url:"bonobos"}).exec(function(err, result){console.log(result)});
 
 var cleanMongo = function(mongoArray) {
   var resultArray = [];
@@ -91,9 +75,14 @@ var cleanMongo = function(mongoArray) {
 }
 
 
-exports.modelMaker = modelMaker;
+
+
+// exports ********************************************
 exports.Link = Link;
+exports.linkMaker = linkMaker;
 exports.cleanMongo = cleanMongo;
+exports.User = User;
+exports.userMaker = userMaker; 
 
 
 
