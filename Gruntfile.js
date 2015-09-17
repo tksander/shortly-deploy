@@ -47,7 +47,6 @@ module.exports = function(grunt) {
                 "./public/lib/underscore.js",
                 "./public/lib/backbone.js",
                 "./public/lib/handlebars.js",
-                "./public/production.min.js"
             ],
 
             dest: './production.js',
