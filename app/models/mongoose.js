@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
-
 mongoose.connect('mongodb://localhost/test/');
+
 
 var linkSchema = new Schema({
   url: String,
@@ -26,20 +26,23 @@ var computeLinkCode = function(url) {
 
 
 var modelMaker = function(url, title, base_url) {
+  console.log('im working')
   var code = computeLinkCode(url);
-  var linkModel = new Link({url: url, 
+  var linkModel = new Link({
+                            url: url, 
                             code: code,
                             title: title,
                             base_url: base_url,
                             visits: 0 });
+  // console.log(linkModel);
   return linkModel;
 };
 
-console.log(modelMaker("https://www.google.com", "Google", "http://shortlyondemandyo.azurewebsites.net/" ))
+// console.log(modelMaker("https://www.google.com", "Google", "http://shortlyondemandyo.azurewebsites.net/" ))
 
 
-var googleLink = modelMaker("https://www.google.com", "Google", "http://shortlyondemandyo.azurewebsites.net/" )
-var amazonLink = modelMaker("https://www.amazon.com", "Amazon", "http://shortlyondemandyo.azurewebsites.net/" )
+// var googleLink = modelMaker("https://www.google.com", "Google", "http://shortlyondemandyo.azurewebsites.net/" )
+// var amazonLink = modelMaker("https://www.amazon.com", "Amazon", "http://shortlyondemandyo.azurewebsites.net/" )
 
 // amazonLink.save(function (err) {
 //   if(err) {
@@ -64,23 +67,34 @@ var amazonLink = modelMaker("https://www.amazon.com", "Amazon", "http://shortlyo
  //       created_at: 1442425547876,
  //       updated_at: 1442425562190 },
 
-var query = Link.find({})
+// Finds all links and wraps in JSON format
+// Link.find({}).exec(function(err, array){
+//   if(err) throw err
+//   var backbone = []
+//   array.forEach(function(item){
+//     item  = item.toObject();
+//     backbone.push({attributes:item});
+//   })
 
-query.exec(function(err, array){
-  if(err) throw err
+//   console.dir(backbone);
+// })
 
+// Link.find({url:"bonobos"}).exec(function(err, result){console.log(result)});
 
-  var backbone = []
-  array.forEach(function(item){
+var cleanMongo = function(mongoArray) {
+  var resultArray = [];
+  mongoArray.forEach(function(item) {
     item  = item.toObject();
-    backbone.push({attributes:item});
+    resultArray.push(item);
+    // resultArray.push({attributes:item});
   })
-
-  console.dir(backbone);
-})
+  return resultArray;
+}
 
 
 exports.modelMaker = modelMaker;
+exports.Link = Link;
+exports.cleanMongo = cleanMongo;
 
 
 
