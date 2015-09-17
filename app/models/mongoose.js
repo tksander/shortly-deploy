@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var bcrypt = require('bcrypt-nodejs');
-mongoose.connect('mongodb://localhost/test/');
+mongoose.connect('mongodb://MongoLab_Tommy:m0KbysBscfeQx6xdL4qnydKSitsRILVSo4mnOtMYS0s-@ds042898.mongolab.com:42898/MongoLab_Tommy');
 
 // making links ********************************************
 
